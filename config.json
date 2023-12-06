@@ -1,0 +1,38 @@
+{
+    "generators": [
+      {
+        "table": "Agents",
+        "localConfigs": {"events": {"exactly": 100}},
+        "row": {
+          "AgentID": {
+            "_gen": "sequentialInteger"
+          }
+        }
+      },
+      {
+        "table": "Calls",
+        "row": {
+          "call_id": {
+            "_gen": "sequentialInteger"
+          },
+          "AgentID": {"_gen": "lookup", "table": "Agents", "path": ["AgentID"]},
+          "StartTime": {"_gen": "formatDateTime", "ms":{"_gen": "now"}},
+          "EndTime": {"_gen": "formatDateTime","ms":{"_gen": "now"}},
+          "ResolutionStatus": {"_gen": "boolean"},
+          "FirstCall": {"_gen": "boolean"},
+          "Call_gen": {"_gen": "oneOf", "choices": ["Inquiry", "Complaint", "Support"]},
+          "Channel": {"_gen": "oneOf", "choices": ["Phone", "Email", "Chat"]}
+        }
+      }
+    ],
+    "connections": {
+      "pg": {
+        "kind": "postgres",
+        "connectionConfigs": {
+          "host": "localhost",
+          "port": 5432,
+          "db": "mydb"
+        }
+      }
+    }
+  }
