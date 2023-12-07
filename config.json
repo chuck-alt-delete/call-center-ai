@@ -6,6 +6,18 @@
         "row": {
           "AgentID": {
             "_gen": "sequentialInteger"
+          },
+          "Name": {
+            "_gen": "string",
+            "expr": "#{FunnyName.name}"
+          },
+          "HireDate": {
+            "_gen": "formatDateTime",
+            "ms": {"_gen": "now"}
+          },
+          "SkillLevel": {
+            "_gen": "oneOf",
+            "choices": ["Beginner", "Intermediate", "Advanced"]
           }
         }
       },
@@ -17,10 +29,19 @@
           },
           "AgentID": {"_gen": "lookup", "table": "Agents", "path": ["AgentID"]},
           "StartTime": {"_gen": "formatDateTime", "ms":{"_gen": "now"}},
-          "EndTime": {"_gen": "formatDateTime","ms":{"_gen": "now"}},
+          "EndTime": {
+            "_gen": "formatDateTime",
+            "ms": {
+              "_gen": "add",
+              "args": [
+                {"_gen": "now"},
+                {"_gen": "normalDistribution", "mean": 120000, "sd": 30000}
+              ]
+            }
+          },
           "ResolutionStatus": {"_gen": "boolean"},
           "FirstCall": {"_gen": "boolean"},
-          "Call_gen": {"_gen": "oneOf", "choices": ["Inquiry", "Complaint", "Support"]},
+          "CallType": {"_gen": "oneOf", "choices": ["Inquiry", "Complaint", "Support"]},
           "Channel": {"_gen": "oneOf", "choices": ["Phone", "Email", "Chat"]}
         }
       }
